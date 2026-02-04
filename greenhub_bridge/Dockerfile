@@ -1,8 +1,6 @@
-
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Node runtime (alpine)
 RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
@@ -10,5 +8,7 @@ COPY package.json package-lock.json* ./
 RUN npm ci --only=production || npm install --only=production
 
 COPY src ./src
+COPY run.sh /run.sh
+RUN chmod +x /run.sh
 
-CMD ["node", "src/index.js"]
+CMD ["/run.sh"]
