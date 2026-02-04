@@ -1,1 +1,23 @@
 
+name: GreenHUB Bridge
+slug: greenhub_bridge
+version: "1.0.0"
+description: Bridge Home Assistant → GreenHUB (push)
+startup: services
+boot: auto
+host_network: true
+arch:
+  - aarch64
+  - armv7
+  - amd64
+options:
+  greenhub_url: https://dev.escoladeltreball.cat
+  site_code: et_centre
+  hmac_secret: ""
+  entity_allowlist: []
+schema:
+  greenhub_url: str
+  site_code: str
+  hmac_secret: str
+  entity_allowlist:
+    - str?
