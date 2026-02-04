@@ -8,6 +8,8 @@ if [ ! -f "$CONFIG_PATH" ]; then
 fi
 
 # Leer options.json sin jq (usar node)
+export HA_URL=$(node -p "require('$CONFIG_PATH').ha_url")
+export HA_TOKEN=$(node -p "require('$CONFIG_PATH').ha_token")
 export GREENHUB_WEBHOOK_URL=$(node -p "require('$CONFIG_PATH').greenhub_webhook_url")
 export HMAC_SECRET=$(node -p "require('$CONFIG_PATH').hmac_secret")
 export SITE_CODE=$(node -p "require('$CONFIG_PATH').site_code || 'et_centre'")
