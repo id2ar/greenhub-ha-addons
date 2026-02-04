@@ -10,7 +10,9 @@ arch:
   - aarch64
   - armv7
   - amd64
+init: false
 options:
+  ha_url: "http://192.168.0.94:8123"
   greenhub_webhook_url: "https://dev.escoladeltreball.cat/greenhub/api/ha/webhook/et_centre"
   ha_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OTMxOTQyYjQ0MTI0MDJhOTA1M2I1Mjk1MmFkZWQ0MCIsImlhdCI6MTc3MDIwMDkxNiwiZXhwIjoyMDg1NTYwOTE2fQ.LJegHid0j_jysUxVKTio5zrF8sgegIk8NSlHd-YHCAM"
   hmac_secret: "etcexOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
@@ -28,8 +30,3 @@ schema:
   max_batch_size: int
   entity_allowlist:
     - str?
-init: false
-map:
-  - config:rw
-  - ssl:ro
-  - share:rw
