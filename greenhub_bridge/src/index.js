@@ -111,8 +111,9 @@ function shouldAccept(entityId) {
 
 // ---- HA WebSocket via Supervisor (Add-on) ----
 // Use ws://supervisor/core/api/websocket with SUPERVISOR_TOKEN
-const HA_WS_URL = "ws://supervisor/core/api/websocket";
-const SUPERVISOR_TOKEN = mustEnv("SUPERVISOR_TOKEN");
+const HA_URL = mustEnv("HA_URL"); // ej: http://192.168.0.94:8123 o http://homeassistant.local:8123
+const HA_WS_URL = toWsUrl(HA_URL);
+const HA_TOKEN = mustEnv("HA_TOKEN"); // tu LLAT
 
 let msgId = 1;
 
@@ -145,7 +146,7 @@ function start() {
 
     // HA WS handshake
     if (msg.type === "auth_required") {
-      ws.send(JSON.stringify({ type: "auth", access_token: SUPERVISOR_TOKEN }));
+      ws.send(JSON.stringify({ type: "auth", access_token: HA_TOKEN }));
       return;
     }
     if (msg.type === "auth_ok") {
