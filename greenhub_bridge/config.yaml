@@ -11,13 +11,22 @@ arch:
   - armv7
   - amd64
 options:
-  greenhub_url: https://dev.escoladeltreball.cat
-  site_code: et_centre
+  greenhub_webhook_url: "https://dev.escoladeltreball.cat/greenhub/api/ha/webhook/et_centre"
   hmac_secret: ""
+  site_code: "et_centre"
+  batch_interval_sec: 5
+  max_batch_size: 100
   entity_allowlist: []
 schema:
-  greenhub_url: str
-  site_code: str
+  greenhub_webhook_url: str
   hmac_secret: str
+  site_code: str
+  batch_interval_sec: int
+  max_batch_size: int
   entity_allowlist:
     - str?
+init: false
+map:
+  - config:rw
+  - ssl:ro
+  - share:rw
