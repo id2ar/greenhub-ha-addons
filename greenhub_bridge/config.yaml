@@ -12,12 +12,15 @@ arch:
   - amd64
 options:
   greenhub_webhook_url: "https://dev.escoladeltreball.cat/greenhub/api/ha/webhook/et_centre"
-  hmac_secret: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OTMxOTQyYjQ0MTI0MDJhOTA1M2I1Mjk1MmFkZWQ0MCIsImlhdCI6MTc3MDIwMDkxNiwiZXhwIjoyMDg1NTYwOTE2fQ.LJegHid0j_jysUxVKTio5zrF8sgegIk8NSlHd-YHCAM"
+  ha_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1OTMxOTQyYjQ0MTI0MDJhOTA1M2I1Mjk1MmFkZWQ0MCIsImlhdCI6MTc3MDIwMDkxNiwiZXhwIjoyMDg1NTYwOTE2fQ.LJegHid0j_jysUxVKTio5zrF8sgegIk8NSlHd-YHCAM"
+  hmac_secret: "etcexOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
   site_code: "et_centre"
   batch_interval_sec: 5
   max_batch_size: 100
   entity_allowlist: []
 schema:
+  ha_url: str
+  ha_token: str
   greenhub_webhook_url: str
   hmac_secret: str
   site_code: str
