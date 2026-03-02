@@ -21,9 +21,29 @@ const MAX_BATCH_SIZE = Number(optEnv("MAX_BATCH_SIZE", "100"));
 const LOG_LEVEL = optEnv("LOG_LEVEL", "info");
 
 const allowlistRaw = optEnv("ENTITY_ALLOWLIST", "");
-const ALLOWLIST = new Set(
-  allowlistRaw.split(",").map(s => s.trim()).filter(Boolean)
-);
+
+function globToRegex(glob) {
+  const escaped = glob.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+  const regexStr = "^" + escaped.replace(/\*/g, ".*") + "$";
+  return new RegExp(regexStr);
+}
+
+function compileAllowlist(rawAllowlist) {
+  const exactMatches = new Set();
+  const regexMatches = [];
+
+  for (const item of rawAllowlist.split(",").map(s => s.trim()).filter(Boolean)) {
+    if (item.includes("*")) {
+      regexMatches.push(globToRegex(item));
+    } else {
+      exactMatches.add(item);
+    }
+  }
+
+  return { exactMatches, regexMatches };
+}
+
+const { exactMatches, regexMatches } = compileAllowlist(allowlistRaw);
 
 function log(level, msg, extra) {
   const levels = ["debug", "info", "warn", "error"];
@@ -105,8 +125,14 @@ function pushEvent(ev) {
 }
 
 function shouldAccept(entityId) {
-  if (ALLOWLIST.size === 0) return true;
-  return ALLOWLIST.has(entityId);
+  if (exactMatches.size === 0 && regexMatches.length === 0) return true;
+  if (exactMatches.has(entityId)) return true;
+
+  for (const rx of regexMatches) {
+    if (rx.test(entityId)) return true;
+  }
+
+  return false;
 }
 
 // ---- HA WebSocket via Supervisor (Add-on) ----
@@ -127,7 +153,12 @@ function start() {
     site: SITE_CODE,
     batch_interval_sec: BATCH_INTERVAL_SEC,
     max_batch: MAX_BATCH_SIZE,
-    allowlist_count: ALLOWLIST.size,
+    allowlist_count: exactMatches.size + regexMatches.length,
+  });
+
+  log("info", "Allowlist compiled", {
+    exact_count: exactMatches.size,
+    pattern_count: regexMatches.length,
   });
 
   const ws = new WebSocket(HA_WS_URL);
