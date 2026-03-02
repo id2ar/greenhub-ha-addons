@@ -28,5 +28,4 @@ schema:
   site_code: str
   batch_interval_sec: int
   max_batch_size: int
-  entity_allowlist:
-    - str?
+  entity_allowlist: "^sensor\.[0-9]+em[0-9]+"
